@@ -9,6 +9,15 @@
 @import "./gradient-buttons.css";
 /* 加密内容样式已移除，现在直接使用非加密文章的样式 */
 
+/* 导入 经典宋体简 字体 */
+@font-face {
+  font-family: "经典宋体简";
+  src: url("/assets/font/经典宋体简.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* 导入 ZenMaruGothic-Medium 字体 */
 @font-face {
   font-family: "ZenMaruGothic-Medium";
