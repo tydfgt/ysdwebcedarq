@@ -199,7 +199,16 @@ export default defineConfig({
 			},
 		},
 		server: {
-				allowedHosts: true,
-			},
+			host: "0.0.0.0",
+			port: 18084,
+			allowedHosts: [
+				"cedarq.cloud",
+				"www.cedarq.cloud",
+				"localhost",
+				"10.1.12.16",
+				"43.139.97.198",
+			],
+		},
 	},
 });
+

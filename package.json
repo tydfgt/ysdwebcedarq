@@ -7,13 +7,13 @@
 		"init-content": "node scripts/init-content-repo.js",
 		"predev": "node scripts/sync-content.js || true",
 		"prebuild": "node scripts/sync-content.js || true",
-		"dev": "astro dev",
-		"start": "astro dev",
+		"dev": "NODE_OPTIONS='--max-old-space-size=2048' astro dev --host",
+		"start": "NODE_OPTIONS='--max-old-space-size=2048' astro dev --host",
 		"check": "astro check",
 		"update-anime": "node scripts/update-anime.mjs",
 		"update-bangumi": "node scripts/update-bangumi.mjs",
 		"update-bilibili": "node scripts/update-bilibili.mjs",
-		"build": "node scripts/update-anime.mjs && astro build && pagefind --site dist && node scripts/compress-fonts.js",
+		"build": "NODE_OPTIONS='--max-old-space-size=4096' node scripts/update-anime.mjs && NODE_OPTIONS='--max-old-space-size=4096' astro build && pagefind --site dist && node scripts/compress-fonts.js",
 		"submit": "node scripts/indexnow-submit.js",
 		"preview": "astro preview",
 		"astro": "astro",
@@ -103,3 +103,4 @@
 		}
 	}
 }
+
