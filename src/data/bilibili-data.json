@@ -1,5 +1,24 @@
 [
   {
+    "title": "JOJO的奇妙冒险 星尘远征军",
+    "status": "watching",
+    "rating": 9.8,
+    "cover": "https://i0.hdslb.com/bfs/bangumi/image/47c0108259355d6d2c517ed97f6b90fb777f844f.png@220w_280h.webp",
+    "description": "时为1987年，乔瑟夫·乔斯达与“柱之男”们之间的死战后过了50年……乔瑟夫为了为了帮助“被恶灵附身了”的外孙子·空条承太郎而来到了日本。原来那并不是恶灵而是幽波纹（替身）。替身突然出现的原因在于，从...",
+    "year": "2014",
+    "studio": "日本",
+    "genre": [
+      "奇幻",
+      "战斗",
+      "漫画改",
+      "冒险"
+    ],
+    "link": "https://www.bilibili.com/bangumi/play/ss4185",
+    "progress": 0,
+    "totalEpisodes": 24,
+    "progressPercent": 0
+  },
+  {
     "title": "JOJO的奇妙冒险 不灭钻石",
     "status": "watching",
     "rating": 9.8,
@@ -15,27 +34,6 @@
       "冒险"
     ],
     "link": "https://www.bilibili.com/bangumi/play/ss5398",
-    "progress": 0,
-    "totalEpisodes": 39,
-    "progressPercent": 0
-  },
-  {
-    "title": "JOJO的奇妙冒险 黄金之风",
-    "status": "watching",
-    "rating": 9.8,
-    "cover": "https://i0.hdslb.com/bfs/bangumi/f34ff3975c39913af936c133ae60a5891babba08.png@220w_280h.webp",
-    "description": "住在意大利那不勒斯的青年乔鲁诺·乔巴纳，是继承了乔斯达家宿敌·DIO之血脉的儿子。  幼年时遭受迫害而自暴自弃的他，由于拯救了一名黑帮男子，而学到了“相信他人”。不忘恩义、带着敬意对待自己的黑帮，让他...",
-    "year": "2018",
-    "studio": "日本",
-    "genre": [
-      "热血",
-      "奇幻",
-      "战斗",
-      "智斗",
-      "漫画改",
-      "冒险"
-    ],
-    "link": "https://www.bilibili.com/bangumi/play/ss25681",
     "progress": 0,
     "totalEpisodes": 39,
     "progressPercent": 0
@@ -62,7 +60,7 @@
   {
     "title": "JOJO的奇妙冒险 星尘远征军 埃及篇",
     "status": "watching",
-    "rating": 9.9,
+    "rating": 9.8,
     "cover": "https://i0.hdslb.com/bfs/bangumi/image/f6709b76e88f50aa132d1e09e2d8de9663a09b3e.png@220w_280h.webp",
     "description": "在乔斯达家的宿敌·迪奥（DIO）复活的影响下，一位年轻人——空条承太郎，得到了名为“幽波纹（替身）”的能力。为了拯救因迪奥的诅咒而倒下的母亲荷莉，空条承太郎与外祖父·乔瑟夫以及伙伴们，一起为了打倒迪奥...",
     "year": "2015",
@@ -76,6 +74,46 @@
     "link": "https://www.bilibili.com/bangumi/play/ss4213",
     "progress": 0,
     "totalEpisodes": 24,
+    "progressPercent": 0
+  },
+  {
+    "title": "JOJO的奇妙冒险 黄金之风",
+    "status": "watching",
+    "rating": 9.8,
+    "cover": "https://i0.hdslb.com/bfs/bangumi/f34ff3975c39913af936c133ae60a5891babba08.png@220w_280h.webp",
+    "description": "住在意大利那不勒斯的青年乔鲁诺·乔巴纳，是继承了乔斯达家宿敌·DIO之血脉的儿子。  幼年时遭受迫害而自暴自弃的他，由于拯救了一名黑帮男子，而学到了“相信他人”。不忘恩义、带着敬意对待自己的黑帮，让他...",
+    "year": "2018",
+    "studio": "日本",
+    "genre": [
+      "热血",
+      "奇幻",
+      "战斗",
+      "智斗",
+      "漫画改",
+      "冒险"
+    ],
+    "link": "https://www.bilibili.com/bangumi/play/ss25681",
+    "progress": 0,
+    "totalEpisodes": 39,
+    "progressPercent": 0
+  },
+  {
+    "title": "JOJO的奇妙冒险",
+    "status": "watching",
+    "rating": 9.8,
+    "cover": "https://i0.hdslb.com/bfs/bangumi/image/9d8d2922b08f3d08d018e6e59e49607cf16d39e6.png@220w_280h.webp",
+    "description": "在古代墨西哥繁盛一时的太阳的子民阿兹特克，他们流传着一枚奇妙的「石鬼面」。 那是一枚奇迹的面具，能让人拥有一种力量，能获得永远的生命并成为真正的掌控者。然而从某个时候开始，就从历史中消失了踪影。 时光...",
+    "year": "2012",
+    "studio": "日本",
+    "genre": [
+      "奇幻",
+      "战斗",
+      "漫画改",
+      "冒险"
+    ],
+    "link": "https://www.bilibili.com/bangumi/play/ss4334",
+    "progress": 0,
+    "totalEpisodes": 26,
     "progressPercent": 0
   },
   {
@@ -97,22 +135,38 @@
     "progressPercent": 0
   },
   {
-    "title": "JOJO的奇妙冒险",
+    "title": "颂乐人偶",
     "status": "watching",
-    "rating": 9.8,
-    "cover": "https://i0.hdslb.com/bfs/bangumi/image/9d8d2922b08f3d08d018e6e59e49607cf16d39e6.png@220w_280h.webp",
-    "description": "在古代墨西哥繁盛一时的太阳的子民阿兹特克，他们流传着一枚奇妙的「石鬼面」。 那是一枚奇迹的面具，能让人拥有一种力量，能获得永远的生命并成为真正的掌控者。然而从某个时候开始，就从历史中消失了踪影。 时光...",
-    "year": "2012",
+    "rating": 7.2,
+    "cover": "https://i0.hdslb.com/bfs/bangumi/image/23fabc7d3b53912eb53672ffb6b5379d77b97980.png@220w_280h.webp",
+    "description": "「我说过了吧？请你们将剩余的人生交给我」 丰川祥子招募组建的乐队・Ave Mujica取得了演唱会和媒体曝光等商业上的成功。 少女失去了曾发誓命运与共的友人，又失去了自己出生长大的家庭。 她为什么要背...",
+    "year": "2025",
     "studio": "日本",
     "genre": [
-      "奇幻",
-      "战斗",
-      "漫画改",
-      "冒险"
+      "原创",
+      "音乐"
     ],
-    "link": "https://www.bilibili.com/bangumi/play/ss4334",
+    "link": "https://www.bilibili.com/bangumi/play/ss73081",
     "progress": 0,
-    "totalEpisodes": 26,
+    "totalEpisodes": 13,
+    "progressPercent": 0
+  },
+  {
+    "title": "BanG Dream! 梦想协奏曲 第三季",
+    "status": "watching",
+    "rating": 9.8,
+    "cover": "https://i0.hdslb.com/bfs/bangumi/image/9e5bd6bd1c2c8b53f75fe42d107ef38e1c3ec6cc.png@220w_280h.webp",
+    "description": "少女香澄一直寻找着幼年时在欣赏星空时所感受到的那股星之鼓动……直至高中入学后不久，香澄在古物商仓库中偶然看见了一把星型吉他、她心中那股封闭已久的情感就此流露而出。以此为契机、香澄与4位同样在寻找光辉之...",
+    "year": "2020",
+    "studio": "日本",
+    "genre": [
+      "音乐",
+      "校园",
+      "原创"
+    ],
+    "link": "https://www.bilibili.com/bangumi/play/ss29308",
+    "progress": 0,
+    "totalEpisodes": 13,
     "progressPercent": 0
   },
   {
@@ -576,7 +630,7 @@
   {
     "title": "蜡笔小新：爆发！温泉激烈大决战",
     "status": "watching",
-    "rating": 9.6,
+    "rating": 9.7,
     "cover": "https://i0.hdslb.com/bfs/bangumi/image/1b7d6dc51f35ad95fb517324f930dfefff2c314f.jpg@220w_280h.webp",
     "description": "污垢达人正计划将整个地球变成一个大温泉，政府的秘密组织温泉g组为了阻止他们的野心，到处寻找黄金之魂温泉，希望借温泉的神力打倒坏蛋。没想到黄金之魂温泉居然就在小新家的地底下，就这样他们一家人卷入了守护温...",
     "year": "1999",
@@ -673,7 +727,7 @@
   {
     "title": "魔法使光之美少女！！～未来之日～",
     "status": "watching",
-    "rating": 9.5,
+    "rating": 9.4,
     "cover": "https://i0.hdslb.com/bfs/bangumi/image/d0a39ce51fdd5f970436b7b931a2925f5b907dfd.png@220w_280h.webp",
     "description": "好奇心旺盛且最喜欢不可思议事物的朝日奈未来，在成为初中二年级生的春假，与魔法使少女理子相遇。在奇迹与魔法的引导下，她与理子一起变身为传说中的魔法使——「光之美少女」！ 未来牵起真爱的熊布偶毛芙伦与从「...",
     "year": "2025",
@@ -761,23 +815,6 @@
     "link": "https://www.bilibili.com/bangumi/play/ss92534",
     "progress": 0,
     "totalEpisodes": 108,
-    "progressPercent": 0
-  },
-  {
-    "title": "颂乐人偶",
-    "status": "watching",
-    "rating": 7.2,
-    "cover": "https://i0.hdslb.com/bfs/bangumi/image/23fabc7d3b53912eb53672ffb6b5379d77b97980.png@220w_280h.webp",
-    "description": "「我说过了吧？请你们将剩余的人生交给我」 丰川祥子招募组建的乐队・Ave Mujica取得了演唱会和媒体曝光等商业上的成功。 少女失去了曾发誓命运与共的友人，又失去了自己出生长大的家庭。 她为什么要背...",
-    "year": "2025",
-    "studio": "日本",
-    "genre": [
-      "原创",
-      "音乐"
-    ],
-    "link": "https://www.bilibili.com/bangumi/play/ss73081",
-    "progress": 0,
-    "totalEpisodes": 13,
     "progressPercent": 0
   },
   {
@@ -1010,7 +1047,7 @@
   {
     "title": "美味派对 光之美少女",
     "status": "watching",
-    "rating": 7.7,
+    "rating": 7.6,
     "cover": "https://i0.hdslb.com/bfs/bangumi/image/d131a3a4500566b705ee944a9e273dcd06a56a4b.png@220w_280h.webp",
     "description": "神奇美味世界的美味王国 掌管着世界上所有的美食 某天，美味王国严加守护的， 写有一切美食制作方法的食谱书， 被掠夺团盗走了，情况危急！ 企图独占一切的掠夺团， 下一个目标是美食的妖精食谱精灵… 能量精...",
     "year": "2022",
@@ -1473,7 +1510,7 @@
   {
     "title": "剧场版 美味派对♡光之美少女 梦想的♡儿童套餐！ ",
     "status": "watching",
-    "rating": 9,
+    "rating": 8.8,
     "cover": "https://i0.hdslb.com/bfs/bangumi/image/c825352b68078d000476de38514e54533e2c5e16.png@220w_280h.webp",
     "description": "大家好！我是和实由依！是个喜欢享受美食的初二学生！ 在我们居住的美味小镇上，「儿童套餐主题公园＜梦乐园＞」 突然出现了！ 据说允许我们尽情游玩，尽情享用美食！哇！肚子饿扁了～！大家一起去看看吧！♪ 美...",
     "year": "2022",
@@ -3368,7 +3405,7 @@
   {
     "title": "阿尔蒂",
     "status": "watching",
-    "rating": 9.5,
+    "rating": 9.6,
     "cover": "https://i0.hdslb.com/bfs/bangumi/image/8657e0706614ccd57f215a2039518f97da561796.png@220w_280h.webp",
     "description": "舞台是16世纪初的佛罗伦萨。\r 在这座绘画及雕刻繁盛的都市，出生于贵族家庭的少女阿尔蒂，从懂事起就热衷于画画。\r 阿尔蒂怀着总有一天要成为画家的梦想而生活，但当时的主流却认为“女性从事画家职业”并不是...",
     "year": "2020",
@@ -7428,24 +7465,6 @@
     "progressPercent": 0
   },
   {
-    "title": "BanG Dream! 梦想协奏曲 第三季",
-    "status": "watching",
-    "rating": 9.8,
-    "cover": "https://i0.hdslb.com/bfs/bangumi/image/9e5bd6bd1c2c8b53f75fe42d107ef38e1c3ec6cc.png@220w_280h.webp",
-    "description": "少女香澄一直寻找着幼年时在欣赏星空时所感受到的那股星之鼓动……直至高中入学后不久，香澄在古物商仓库中偶然看见了一把星型吉他、她心中那股封闭已久的情感就此流露而出。以此为契机、香澄与4位同样在寻找光辉之...",
-    "year": "2020",
-    "studio": "日本",
-    "genre": [
-      "音乐",
-      "校园",
-      "原创"
-    ],
-    "link": "https://www.bilibili.com/bangumi/play/ss29308",
-    "progress": 0,
-    "totalEpisodes": 13,
-    "progressPercent": 0
-  },
-  {
     "title": "恋爱小行星",
     "status": "watching",
     "rating": 9.7,
@@ -7636,25 +7655,6 @@
     "link": "https://www.bilibili.com/bangumi/play/ss28547",
     "progress": 0,
     "totalEpisodes": 12,
-    "progressPercent": 0
-  },
-  {
-    "title": "JOJO的奇妙冒险 星尘远征军",
-    "status": "watching",
-    "rating": 9.8,
-    "cover": "https://i0.hdslb.com/bfs/bangumi/image/47c0108259355d6d2c517ed97f6b90fb777f844f.png@220w_280h.webp",
-    "description": "时为1987年，乔瑟夫·乔斯达与“柱之男”们之间的死战后过了50年……乔瑟夫为了为了帮助“被恶灵附身了”的外孙子·空条承太郎而来到了日本。原来那并不是恶灵而是幽波纹（替身）。替身突然出现的原因在于，从...",
-    "year": "2014",
-    "studio": "日本",
-    "genre": [
-      "奇幻",
-      "战斗",
-      "漫画改",
-      "冒险"
-    ],
-    "link": "https://www.bilibili.com/bangumi/play/ss4185",
-    "progress": 0,
-    "totalEpisodes": 24,
     "progressPercent": 0
   },
   {
@@ -10160,7 +10160,7 @@
   {
     "title": "苍翼默示录 Alter Memory",
     "status": "watching",
-    "rating": 9.1,
+    "rating": 9.2,
     "cover": "https://i0.hdslb.com/bfs/bangumi/8c2c8f70874144e3c2bf3bd553042d7e35c522c1.jpg@220w_280h.webp",
     "description": "突然降临的魔兽将人类逼入灭亡边缘，最终“六英雄”出现并将远古的力量“魔术”传给人类，通过使用魔术和科技结合开发出来的“术式”，人类在这场后来被称为“第一次魔道大战”的战争中逆转胜利。  然而战后，负责...",
     "year": "2013",
@@ -10387,7 +10387,7 @@
   {
     "title": "魔卡少女樱 CLEAR CARD篇",
     "status": "watching",
-    "rating": 9.8,
+    "rating": 9.7,
     "cover": "https://i0.hdslb.com/bfs/bangumi/07245c4bf4acb03a5819762fea3210c656aba66c.jpg@220w_280h.webp",
     "description": "樱集齐了会给世间带来灾难的“库洛牌”，并用魔法的力量将它们变成了自己的牌。樱花盛开的4月，小樱升入了初中1年级。而后，小樱与曾返回香港的小狼重逢，并一起开心地去往学校。某个夜里，收集的牌出现了异常……...",
     "year": "2018",
@@ -11459,7 +11459,7 @@
   {
     "title": "魔法少女育成计划",
     "status": "watching",
-    "rating": 7.9,
+    "rating": 8,
     "cover": "https://i0.hdslb.com/bfs/bangumi/927fc75f3f044d4115392ffdad8fbcce9dbe2f95.jpg@220w_280h.webp",
     "description": "欺骗、隐瞒、互相残杀。获得了魔法之力的少女们的残酷无情生存游戏！ 拥有极大人气的社交游戏《魔法少女育成计划》，是能制造出万中无一的正牌魔法少女的奇迹游戏。几位少女幸运地获得了魔法之力，度过着充实的每一...",
     "year": "2016",

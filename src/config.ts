@@ -121,10 +121,10 @@ export const siteConfig: SiteConfig = {
 			desktop: [
 				"/assets/desktop-banner/1.webp",
 				"/assets/desktop-banner/2.webp",
-				"/assets/desktop-banner/3.webp",
-				"/assets/desktop-banner/4.webp",
-				"/assets/desktop-banner/5.webp",
-				"/assets/desktop-banner/6.webp",
+				"/assets/desktop-banner/3.png",
+				"/assets/desktop-banner/4.png",
+				"/assets/desktop-banner/5.png",
+				"/assets/desktop-banner/6.png",
 			], // 桌面横幅图片
 			mobile: [
 				"/assets/mobile-banner/1.webp",
@@ -160,11 +160,9 @@ export const siteConfig: SiteConfig = {
 
 		homeText: {
 			enable: true, // 在主页显示自定义文本
-			title: "1&7", // 主页横幅主标题
+			title: "技术博客", // 主页横幅主标题
 
-			subtitle: [
-				"测试sub",
-			],
+			subtitle: ["欢迎阅读"],
 			typewriter: {
 				enable: true, // 启用副标题打字机效果
 
@@ -246,7 +244,7 @@ export const fullscreenWallpaperConfig: FullscreenWallpaperConfig = {
 	position: "center", // 壁纸位置，等同于 object-position
 	carousel: {
 		enable: true, // 启用轮播
-		interval: 5, // 轮播间隔时间（秒）
+		interval: 3, // 轮播间隔时间（秒）
 	},
 	zIndex: -1, // 层级，确保壁纸在背景层
 	opacity: 0.8, // 壁纸透明度
@@ -359,7 +357,7 @@ export const profileConfig: ProfileConfig = {
 	bio: "还没到万策尽的时候吧",
 	typewriter: {
 		enable: true, // 启用个人简介打字机效果
-		speed: 80, // 打字速度（毫秒）
+		speed: 100, // 打字速度（毫秒）
 	},
 	links: [
 		{
@@ -370,12 +368,12 @@ export const profileConfig: ProfileConfig = {
 		{
 			name: "Gitee",
 			icon: "mdi:git",
-			url: "https://gitee.com/matsuzakayuki",
+			url: "https://gitee.com/tydfgt",
 		},
 		{
 			name: "GitHub",
 			icon: "fa7-brands:github",
-			url: "https://github.com/matsuzaka-yuki",
+			url: "https://github.com/tydfgt",
 		},
 		{
 			name: "Codeberg",
@@ -443,7 +441,7 @@ export const shareConfig: ShareConfig = {
 };
 
 export const announcementConfig: AnnouncementConfig = {
-	title: "", // 公告标题，填空使用i18n字符串Key.announcement
+	title: "多寻思寻思", // 公告标题，填空使用i18n字符串Key.announcement
 	content: "挺好的", // 公告内容
 	closable: true, // 允许用户关闭公告
 	link: {
@@ -621,12 +619,7 @@ export const pioConfig: import("./types/config").PioConfig = {
 	hiddenOnMobile: true, // 默认在移动设备上隐藏
 	dialog: {
 		welcome: "Welcome to Mizuki Website!", // 欢迎词
-		touch: [
-			"What are you doing?",
-			"Stop touching me!",
-			"HENTAI!",
-			"Don't bully me like that!",
-		], // 触摸提示
+		touch: ["你瞅啥", "别摸我", "停下来！", "不要这样欺负我！"], // 触摸提示
 		home: "Click here to go back to homepage!", // 首页提示
 		skin: ["Want to see my new outfit?", "The new outfit looks great~"], // 换装提示
 		close: "QWQ See you next time~", // 关闭提示
@@ -647,3 +640,4 @@ export const widgetConfigs = {
 } as const;
 
 // umamiConfig相关配置已移动至astro.config.mjs中,统计脚本请自行在Layout.astro文件的<head>中插入
+

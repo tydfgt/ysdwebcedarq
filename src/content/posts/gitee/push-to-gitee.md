@@ -2,10 +2,12 @@
 title: 如何将项目推送到 Gitee 仓库
 published: 2026-03-31
 image: './1583124371_587283.jpg'
-description: '详细教程：教你如何将本地项目推送到 Gitee 代码托管平台，包括 Git 配置、仓库创建和推送步骤。'
+description: '详细教程：教你如何将本地项目推送到 Gitee 代码托管平台,包括 Git 配置、仓库创建和推送步骤。'
 tags: [Git, Gitee, 版本控制，部署]
 category: '教程，Git'
 draft: false
+encrypted: true
+password: "123456"
 ---
 
 # 如何将项目推送到 Gitee 仓库
