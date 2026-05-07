@@ -19,6 +19,7 @@ from .frames import (
     build_ctrl_cmd, build_free_ctrl_cmd, build_io_cmd,
     build_park_cmd, build_stop_cmd,
     parse_ctrl_fb, parse_wheel_fb, parse_io_fb,
+    clamp_speed, clamp_angular,
 )
 from .signal_utils import calc_bcc
 
@@ -301,11 +302,13 @@ class TKMidCAN:
     def update_ctrl(self, speed: float, angular_vel: float = 0.0):
         """
         在线更新运动控制参数 (速度/角速度)。
-        不影响心跳连续性。
+        自动限幅至安全范围, 不影响心跳连续性。
         """
         if self._ctrl_mode != 'motion':
             print("[WARN] 当前非运动控制模式, 请先调用 start_ctrl()")
             return
+        speed = clamp_speed(speed)
+        angular_vel = clamp_angular(angular_vel)
         with self._ctrl_lock:
             self._ctrl_speed = speed
             self._ctrl_angular = angular_vel
@@ -313,10 +316,16 @@ class TKMidCAN:
     def update_free_ctrl(self, left_speed: float, right_speed: float):
         """
         在线更新自由控制参数 (左右轮速)。
+        自动限幅, 不影响心跳连续性。
         """
         if self._ctrl_mode != 'free':
             print("[WARN] 当前非自由控制模式, 请先调用 start_free_ctrl()")
             return
+        left_speed = clamp_speed(left_speed)
+        right_speed = clamp_speed(right_speed)
+        with self._ctrl_lock:
+            self._ctrl_left = left_speed
+            self._ctrl_right = right_speed
         with self._ctrl_lock:
             self._ctrl_left = left_speed
             self._ctrl_right = right_speed

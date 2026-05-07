@@ -38,6 +38,7 @@ from .config import (
     CTRL_CMD_ID, FREE_CTRL_CMD_ID, IO_CMD_ID,
     CTRL_FB_ID, L_WHEEL_FB_ID, R_WHEEL_FB_ID, IO_FB_ID,
     BMS_FB_ID, BMS_FLAG_FB_ID,
+    MAX_SPEED, MAX_ANGULAR_VEL,
     DEFAULT_CHANNEL, DEFAULT_BUSTYPE, DEFAULT_BITRATE,
     SEND_PERIOD, IO_FB_PERIOD,
 )
@@ -56,6 +57,8 @@ from .frames import (
     parse_ctrl_fb,
     parse_wheel_fb,
     parse_io_fb,
+    clamp_speed,
+    clamp_angular,
 )
 from .bus import TKMidCAN
 
@@ -67,10 +70,13 @@ __all__ = [
     'CTRL_CMD_ID', 'FREE_CTRL_CMD_ID', 'IO_CMD_ID',
     'CTRL_FB_ID', 'L_WHEEL_FB_ID', 'R_WHEEL_FB_ID', 'IO_FB_ID',
     'BMS_FB_ID', 'BMS_FLAG_FB_ID',
+    'MAX_SPEED', 'MAX_ANGULAR_VEL',
     'DEFAULT_CHANNEL', 'DEFAULT_BUSTYPE', 'DEFAULT_BITRATE',
     'SEND_PERIOD', 'IO_FB_PERIOD',
     # 信号工具
     'abs_bit', 'pack_signal', 'unpack_signal', 'calc_bcc',
+    # 限幅工具
+    'clamp_speed', 'clamp_angular',
     # 帧构建
     'build_ctrl_cmd', 'build_free_ctrl_cmd', 'build_io_cmd',
     'build_park_cmd', 'build_stop_cmd',

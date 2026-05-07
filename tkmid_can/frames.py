@@ -5,8 +5,21 @@ CAN 帧构建与解析
 依赖: config, signal_utils
 """
 
-from .config import Gear
+from .config import Gear, MAX_SPEED, MAX_ANGULAR_VEL
 from .signal_utils import pack_signal, unpack_signal, calc_bcc
+
+
+# ============================================================
+# 限幅工具
+# ============================================================
+
+def clamp_speed(speed: float) -> float:
+    """限制线速度在 ±MAX_SPEED 范围内"""
+    return max(-MAX_SPEED, min(MAX_SPEED, speed))
+
+def clamp_angular(angular: float) -> float:
+    """限制角速度在 ±MAX_ANGULAR_VEL 范围内"""
+    return max(-MAX_ANGULAR_VEL, min(MAX_ANGULAR_VEL, angular))
 
 
 # ============================================================
@@ -22,12 +35,14 @@ def build_ctrl_cmd(gear: Gear, speed: float, angular_vel: float,
 
     参数:
         gear:         目标档位 (Gear.MOTION_CTRL=3)
-        speed:        目标线速度 (m/s), 精度 0.001
-        angular_vel:  目标角速度 (°/s), 精度 0.01, 左转为正
+        speed:        目标线速度 (m/s), 精度 0.001, 自动限幅至 ±MAX_SPEED
+        angular_vel:  目标角速度 (°/s), 精度 0.01, 左转为正, 自动限幅
         alive_counter: 心跳计数值 (0~15, 外部管理以保持连续)
     返回:
         8 字节 CAN 数据
     """
+    speed = clamp_speed(speed)
+    angular_vel = clamp_angular(angular_vel)
     data = bytearray(8)
 
     # 档位: byte0, bit0, length 4, unsigned
@@ -55,12 +70,14 @@ def build_free_ctrl_cmd(gear: Gear, left_speed: float,
 
     参数:
         gear:         目标档位 (应为 Gear.FREE_CTRL=4)
-        left_speed:   左轮目标速度 (m/s), 精度 0.001
-        right_speed:  右轮目标速度 (m/s), 精度 0.001
+        left_speed:   左轮目标速度 (m/s), 精度 0.001, 自动限幅
+        right_speed:  右轮目标速度 (m/s), 精度 0.001, 自动限幅
         alive_counter: 心跳计数值
     返回:
         8 字节 CAN 数据
     """
+    left_speed = clamp_speed(left_speed)
+    right_speed = clamp_speed(right_speed)
     data = bytearray(8)
 
     # 档位: byte0, bit0, length 4
