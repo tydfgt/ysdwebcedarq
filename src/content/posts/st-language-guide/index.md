@@ -23,9 +23,10 @@ draft: false
 - [9. 程序组织单元](#9-程序组织单元)
 - [10. 数组与字符串处理](#10-数组与字符串处理)
 - [11. 定时器与计数器](#11-定时器与计数器)
-- [12. 实际工程案例](#12-实际工程案例)
-- [13. 最佳实践与调试技巧](#13-最佳实践与调试技巧)
-- [14. 常见问题解答](#14-常见问题解答)
+- [12. 自锁与互锁逻辑](#12-自锁与互锁逻辑)
+- [13. 实际工程案例](#13-实际工程案例)
+- [14. 最佳实践与调试技巧](#14-最佳实践与调试技巧)
+- [15. 常见问题解答](#15-常见问题解答)
 
 ---
 
@@ -965,7 +966,638 @@ END_PROGRAM
 
 ---
 
-## 12. 实际工程案例
+## 12. 自锁与互锁逻辑
+
+自锁（Self-holding）和互锁（Interlock）是PLC编程中最基础也是最重要的控制逻辑，广泛应用于电机控制、安全保护、顺序控制等场景。
+
+### 12.1 自锁电路（起保停电路）
+
+自锁电路是最经典的PLC控制逻辑，实现"启动-保持-停止"功能。
+
+#### 基本自锁电路
+
+```pascal
+PROGRAM BasicSelfHold
+VAR_INPUT
+    startButton : BOOL;     // 启动按钮（常开）
+    stopButton : BOOL;      // 停止按钮（常闭）
+END_VAR
+
+VAR_OUTPUT
+    motorRun : BOOL;        // 电机运行输出
+END_VAR
+
+// 经典自锁逻辑
+motorRun := (startButton OR motorRun) AND NOT stopButton;
+
+END_PROGRAM
+```
+
+**工作原理：**
+- 按下启动按钮 → motorRun = TRUE
+- 松开启动按钮 → motorRun 通过自身触点保持为 TRUE（自锁）
+- 按下停止按钮 → motorRun = FALSE（解除自锁）
+
+#### 带状态指示的自锁电路
+
+```pascal
+PROGRAM SelfHoldWithIndicator
+VAR_INPUT
+    startButton : BOOL;     // 启动按钮
+    stopButton : BOOL;      // 停止按钮
+    emergencyStop : BOOL;   // 急停按钮
+END_VAR
+
+VAR_OUTPUT
+    motorRun : BOOL;        // 电机运行
+    runIndicator : BOOL;    // 运行指示灯
+    faultIndicator : BOOL;  // 故障指示灯
+END_VAR
+
+VAR
+    motorFault : BOOL;      // 电机故障信号
+    overloadRelay : BOOL;   // 过载继电器
+END_VAR
+
+// 自锁逻辑（包含多重保护）
+IF emergencyStop OR overloadRelay OR motorFault THEN
+    // 紧急停止或故障时立即停止
+    motorRun := FALSE;
+ELSIF stopButton THEN
+    // 正常停止
+    motorRun := FALSE;
+ELSIF startButton THEN
+    // 启动（只有在无故障状态下才能启动）
+    IF NOT motorFault AND NOT overloadRelay THEN
+        motorRun := TRUE;
+    END_IF;
+END_IF;
+
+// 状态指示
+runIndicator := motorRun;
+faultIndicator := motorFault OR overloadRelay;
+
+END_PROGRAM
+```
+
+#### 使用SET/RESET指令的自锁
+
+```pascal
+PROGRAM SetResetLatch
+VAR_INPUT
+    startButton : BOOL;
+    stopButton : BOOL;
+END_VAR
+
+VAR_OUTPUT
+    motorRun : BOOL;
+END_VAR
+
+// 使用SET/RESET指令（部分平台支持）
+IF startButton THEN
+    motorRun := TRUE;   // 或 SET(motorRun);
+END_IF;
+
+IF stopButton THEN
+    motorRun := FALSE;  // 或 RESET(motorRun);
+END_IF;
+
+END_PROGRAM
+```
+
+### 12.2 互锁电路
+
+互锁用于防止两个或多个设备同时运行，确保安全。
+
+#### 基本互锁（正反转控制）
+
+最经典的互锁应用是电机正反转控制，防止正转和反转接触器同时吸合造成短路。
+
+```pascal
+PROGRAM MotorForwardReverse
+VAR_INPUT
+    forwardBtn : BOOL;    // 正转按钮
+    reverseBtn : BOOL;    // 反转按钮
+    stopBtn : BOOL;       // 停止按钮
+END_VAR
+
+VAR_OUTPUT
+    forwardRun : BOOL;    // 正转输出
+    reverseRun : BOOL;    // 反转输出
+END_VAR
+
+VAR
+    forwardLocked : BOOL; // 正转互锁标志
+    reverseLocked : BOOL; // 反转互锁标志
+END_VAR
+
+// 正转控制（带互锁）
+IF stopBtn THEN
+    forwardRun := FALSE;
+    reverseRun := FALSE;
+ELSIF forwardBtn AND NOT reverseRun THEN
+    // 只有在反转未运行时才能正转
+    forwardRun := TRUE;
+    reverseRun := FALSE;
+END_IF;
+
+// 反转控制（带互锁）
+IF stopBtn THEN
+    forwardRun := FALSE;
+    reverseRun := FALSE;
+ELSIF reverseBtn AND NOT forwardRun THEN
+    // 只有在正转未运行时才能反转
+    reverseRun := TRUE;
+    forwardRun := FALSE;
+END_IF;
+
+END_PROGRAM
+```
+
+#### 三重互锁（更安全的正反转控制）
+
+```pascal
+PROGRAM TripleInterlock
+VAR_INPUT
+    forwardBtn : BOOL;
+    reverseBtn : BOOL;
+    stopBtn : BOOL;
+END_VAR
+
+VAR_OUTPUT
+    forwardContact : BOOL;  // 正转接触器
+    reverseContact : BOOL;  // 反转接触器
+END_VAR
+
+VAR
+    forwardRequest : BOOL;  // 正转请求
+    reverseRequest : BOOL;  // 反转请求
+    changeoverDelay : TON;  // 换向延时定时器
+END_VAR
+
+// 请求信号（按钮触发）
+IF forwardBtn THEN
+    forwardRequest := TRUE;
+    reverseRequest := FALSE;
+ELSIF reverseBtn THEN
+    reverseRequest := TRUE;
+    forwardRequest := FALSE;
+ELSIF stopBtn THEN
+    forwardRequest := FALSE;
+    reverseRequest := FALSE;
+END_IF;
+
+// 换向延时（防止快速切换）
+changeoverDelay(IN := (forwardRequest XOR reverseRequest), 
+                PT := T#500ms);
+
+// 输出控制（三重互锁）
+// 1. 电气互锁：NOT reverseContact
+// 2. 机械互锁：changeoverDelay.Q
+// 3. 软件互锁：NOT reverseRequest
+forwardContact := forwardRequest 
+                  AND NOT reverseContact 
+                  AND changeoverDelay.Q
+                  AND NOT reverseRequest;
+
+reverseContact := reverseRequest 
+                  AND NOT forwardContact 
+                  AND changeoverDelay.Q
+                  AND NOT forwardRequest;
+
+END_PROGRAM
+```
+
+#### 多设备互锁（优先级控制）
+
+```pascal
+PROGRAM PriorityInterlock
+VAR_INPUT
+    pump1Start : BOOL;      // 泵1启动
+    pump2Start : BOOL;      // 泵2启动
+    pump3Start : BOOL;      // 泵3启动
+    allStop : BOOL;         // 全部停止
+END_VAR
+
+VAR_OUTPUT
+    pump1Run : BOOL;        // 泵1运行
+    pump2Run : BOOL;        // 泵2运行
+    pump3Run : BOOL;        // 泵3运行
+END_VAR
+
+VAR
+    pump1Request : BOOL;
+    pump2Request : BOOL;
+    pump3Request : BOOL;
+END_VAR
+
+// 请求锁定
+IF pump1Start THEN pump1Request := TRUE; END_IF;
+IF pump2Start THEN pump2Request := TRUE; END_IF;
+IF pump3Start THEN pump3Request := TRUE; END_IF;
+
+IF allStop THEN
+    pump1Request := FALSE;
+    pump2Request := FALSE;
+    pump3Request := FALSE;
+END_IF;
+
+// 优先级互锁（泵1 > 泵2 > 泵3）
+// 只有当前面优先级的泵未运行时，后面的泵才能运行
+IF pump1Request THEN
+    pump1Run := TRUE;
+    pump2Run := FALSE;
+    pump3Run := FALSE;
+ELSIF pump2Request AND NOT pump1Run THEN
+    pump2Run := TRUE;
+    pump1Run := FALSE;
+    pump3Run := FALSE;
+ELSIF pump3Request AND NOT pump1Run AND NOT pump2Run THEN
+    pump3Run := TRUE;
+    pump1Run := FALSE;
+    pump2Run := FALSE;
+ELSE
+    pump1Run := FALSE;
+    pump2Run := FALSE;
+    pump3Run := FALSE;
+END_IF;
+
+END_PROGRAM
+```
+
+### 12.3 组合应用：自锁+互锁
+
+实际工程中，自锁和互锁经常组合使用。
+
+#### 多台电机顺序启动互锁
+
+```pascal
+PROGRAM SequentialMotorControl
+VAR_INPUT
+    startAll : BOOL;        // 全部启动
+    stopAll : BOOL;         // 全部停止
+    emergencyStop : BOOL;   // 急停
+END_VAR
+
+VAR_OUTPUT
+    motor1Run : BOOL;       // 电机1（主电机）
+    motor2Run : BOOL;       // 电机2（辅机1）
+    motor3Run : BOOL;       // 电机3（辅机2）
+END_VAR
+
+VAR
+    // 定时器
+    delay1_2 : TON;         // 电机1到2的延时
+    delay2_3 : TON;         // 电机2到3的延时
+    
+    // 中间状态
+    motor1Started : BOOL;
+    motor2Started : BOOL;
+END_VAR
+
+// 急停处理
+IF emergencyStop THEN
+    motor1Run := FALSE;
+    motor2Run := FALSE;
+    motor3Run := FALSE;
+    motor1Started := FALSE;
+    motor2Started := FALSE;
+    RETURN;
+END_IF;
+
+// 停止处理
+IF stopAll THEN
+    motor1Run := FALSE;
+    motor2Run := FALSE;
+    motor3Run := FALSE;
+    motor1Started := FALSE;
+    motor2Started := FALSE;
+END_IF;
+
+// 电机1控制（自锁）
+IF startAll AND NOT motor1Run THEN
+    motor1Run := TRUE;
+END_IF;
+
+IF motor1Run THEN
+    motor1Started := TRUE;
+END_IF;
+
+// 电机2控制（自锁+互锁）
+// 互锁条件：电机1必须先运行
+delay1_2(IN := motor1Started, PT := T#3s);
+
+IF delay1_2.Q AND NOT motor2Run THEN
+    motor2Run := TRUE;
+END_IF;
+
+IF motor2Run THEN
+    motor2Started := TRUE;
+END_IF;
+
+// 电机3控制（自锁+互锁）
+// 互锁条件：电机2必须先运行
+delay2_3(IN := motor2Started, PT := T#2s);
+
+IF delay2_3.Q AND NOT motor3Run THEN
+    motor3Run := TRUE;
+END_IF;
+
+// 反向互锁：如果前面的电机停止，后面的也必须停止
+IF NOT motor1Run THEN
+    motor2Run := FALSE;
+    motor3Run := FALSE;
+END_IF;
+
+IF NOT motor2Run THEN
+    motor3Run := FALSE;
+END_IF;
+
+END_PROGRAM
+```
+
+#### 双工位选择互锁
+
+```pascal
+PROGRAM DualStationSelector
+VAR_INPUT
+    station1Select : BOOL;  // 选择工位1
+    station2Select : BOOL;  // 选择工位2
+    station1Start : BOOL;   // 工位1启动
+    station2Start : BOOL;   // 工位2启动
+    allStop : BOOL;         // 全部停止
+END_VAR
+
+VAR_OUTPUT
+    station1Active : BOOL;  // 工位1激活
+    station2Active : BOOL;  // 工位2激活
+    station1Running : BOOL; // 工位1运行
+    station2Running : BOOL; // 工位2运行
+END_VAR
+
+VAR
+    station1Selected : BOOL;
+    station2Selected : BOOL;
+END_VAR
+
+// 工位选择互锁（只能选择一个工位）
+IF station1Select THEN
+    station1Selected := TRUE;
+    station2Selected := FALSE;
+ELSIF station2Select THEN
+    station2Selected := TRUE;
+    station1Selected := FALSE;
+END_IF;
+
+// 工位激活显示
+station1Active := station1Selected;
+station2Active := station2Selected;
+
+// 工位1运行控制（自锁+互锁）
+IF allStop THEN
+    station1Running := FALSE;
+ELSIF station1Start AND station1Selected AND NOT station2Running THEN
+    station1Running := TRUE;
+END_IF;
+
+// 工位2运行控制（自锁+互锁）
+IF allStop THEN
+    station2Running := FALSE;
+ELSIF station2Start AND station2Selected AND NOT station1Running THEN
+    station2Running := TRUE;
+END_IF;
+
+END_PROGRAM
+```
+
+### 12.4 高级互锁模式
+
+#### 时间片轮转互锁
+
+```pascal
+PROGRAM TimeSlotInterlock
+VAR_INPUT
+    device1Request : BOOL;
+    device2Request : BOOL;
+    device3Request : BOOL;
+END_VAR
+
+VAR_OUTPUT
+    device1Enable : BOOL;
+    device2Enable : BOOL;
+    device3Enable : BOOL;
+END_VAR
+
+VAR
+    cycleTimer : TON;           // 周期定时器
+    timeSlot : INT := 0;        // 当前时间片
+    slotDuration : TIME := T#10s; // 每个时间片10秒
+END_VAR
+
+// 时间片循环
+cycleTimer(IN := TRUE, PT := slotDuration);
+
+IF cycleTimer.Q THEN
+    cycleTimer(IN := FALSE);  // 复位
+    timeSlot := timeSlot + 1;
+    
+    IF timeSlot > 2 THEN
+        timeSlot := 0;
+    END_IF;
+END_IF;
+
+// 根据时间片分配设备（互锁）
+CASE timeSlot OF
+    0:
+        // 时间片0：设备1优先
+        IF device1Request THEN
+            device1Enable := TRUE;
+            device2Enable := FALSE;
+            device3Enable := FALSE;
+        ELSIF device2Request THEN
+            device1Enable := FALSE;
+            device2Enable := TRUE;
+            device3Enable := FALSE;
+        ELSIF device3Request THEN
+            device1Enable := FALSE;
+            device2Enable := FALSE;
+            device3Enable := TRUE;
+        ELSE
+            device1Enable := FALSE;
+            device2Enable := FALSE;
+            device3Enable := FALSE;
+        END_IF;
+        
+    1:
+        // 时间片1：设备2优先
+        IF device2Request THEN
+            device1Enable := FALSE;
+            device2Enable := TRUE;
+            device3Enable := FALSE;
+        ELSIF device3Request THEN
+            device1Enable := FALSE;
+            device2Enable := FALSE;
+            device3Enable := TRUE;
+        ELSIF device1Request THEN
+            device1Enable := TRUE;
+            device2Enable := FALSE;
+            device3Enable := FALSE;
+        ELSE
+            device1Enable := FALSE;
+            device2Enable := FALSE;
+            device3Enable := FALSE;
+        END_IF;
+        
+    2:
+        // 时间片2：设备3优先
+        IF device3Request THEN
+            device1Enable := FALSE;
+            device2Enable := FALSE;
+            device3Enable := TRUE;
+        ELSIF device1Request THEN
+            device1Enable := TRUE;
+            device2Enable := FALSE;
+            device3Enable := FALSE;
+        ELSIF device2Request THEN
+            device1Enable := FALSE;
+            device2Enable := TRUE;
+            device3Enable := FALSE;
+        ELSE
+            device1Enable := FALSE;
+            device2Enable := FALSE;
+            device3Enable := FALSE;
+        END_IF;
+END_CASE;
+
+END_PROGRAM
+```
+
+#### 条件互锁（基于状态的互锁）
+
+```pascal
+PROGRAM ConditionalInterlock
+VAR_INPUT
+    valve1Open : BOOL;        // 阀门1打开命令
+    valve2Open : BOOL;        // 阀门2打开命令
+    tankLevel : REAL;         // 液位
+    tankPressure : REAL;      // 压力
+END_VAR
+
+VAR_OUTPUT
+    valve1Actual : BOOL;      // 阀门1实际状态
+    valve2Actual : BOOL;      // 阀门2实际状态
+    alarmHighLevel : BOOL;    // 高液位报警
+    alarmHighPressure : BOOL; // 高压报警
+END_VAR
+
+VAR
+    safetyInterlock : BOOL;   // 安全互锁
+END_VAR
+
+// 安全条件检查
+alarmHighLevel := tankLevel > 90.0;
+alarmHighPressure := tankPressure > 5.0;
+
+// 安全互锁条件
+safetyInterlock := NOT alarmHighLevel AND NOT alarmHighPressure;
+
+// 阀门1控制（带条件互锁）
+IF valve1Open AND safetyInterlock AND NOT valve2Actual THEN
+    valve1Actual := TRUE;
+ELSIF NOT valve1Open OR NOT safetyInterlock OR valve2Actual THEN
+    valve1Actual := FALSE;
+END_IF;
+
+// 阀门2控制（带条件互锁）
+IF valve2Open AND safetyInterlock AND NOT valve1Actual THEN
+    valve2Actual := TRUE;
+ELSIF NOT valve2Open OR NOT safetyInterlock OR valve1Actual THEN
+    valve2Actual := FALSE;
+END_IF;
+
+END_PROGRAM
+```
+
+### 12.5 常见错误与注意事项
+
+#### ❌ 常见错误1：忘记互锁导致冲突
+
+```pascal
+// 错误示例：没有互锁
+IF button1 THEN output1 := TRUE; END_IF;
+IF button2 THEN output2 := TRUE; END_IF;
+// 问题：output1和output2可能同时为TRUE
+
+// 正确示例：添加互锁
+IF button1 AND NOT output2 THEN output1 := TRUE; END_IF;
+IF button2 AND NOT output1 THEN output2 := TRUE; END_IF;
+```
+
+#### ❌ 常见错误2：自锁条件不完整
+
+```pascal
+// 错误示例：缺少停止条件
+motorRun := startButton OR motorRun;  // 无法停止！
+
+// 正确示例：完整的自锁
+motorRun := (startButton OR motorRun) AND NOT stopButton;
+```
+
+#### ❌ 常见错误3：互锁逻辑不对称
+
+```pascal
+// 错误示例：不对称的互锁
+IF cond1 THEN out1 := TRUE; END_IF;
+IF cond2 AND NOT out1 THEN out2 := TRUE; END_IF;
+// 问题：out1可以覆盖out2，但out2不能覆盖out1
+
+// 正确示例：对称互锁
+IF cond1 AND NOT out2 THEN out1 := TRUE; END_IF;
+IF cond2 AND NOT out1 THEN out2 := TRUE; END_IF;
+```
+
+#### ✅ 最佳实践
+
+1. **始终添加急停回路**
+```pascal
+IF emergencyStop THEN
+    // 立即清除所有输出
+    output1 := FALSE;
+    output2 := FALSE;
+    RETURN;
+END_IF;
+```
+
+2. **使用中间变量提高可读性**
+```pascal
+// 清晰的状态判断
+canStart := NOT fault AND NOT running AND ready;
+IF startButton AND canStart THEN
+    running := TRUE;
+END_IF;
+```
+
+3. **添加状态反馈**
+```pascal
+// 不仅控制输出，还要监控状态
+IF motorCommand AND NOT motorFeedback THEN
+    // 命令已发出但没有反馈，可能是故障
+    motorFault := TRUE;
+END_IF;
+```
+
+4. **考虑扫描周期的影响**
+```pascal
+// 使用上升沿检测避免多次触发
+IF risingEdge(startButton) THEN
+    // 只在按钮按下的第一个扫描周期执行
+    counter := counter + 1;
+END_IF;
+```
+
+---
+
+## 13. 实际工程案例
 
 ### 12.1 温度控制系统
 
@@ -1231,9 +1863,9 @@ END_PROGRAM
 
 ---
 
-## 13. 最佳实践与调试技巧
+## 14. 最佳实践与调试技巧
 
-### 13.1 编程最佳实践
+### 14.1 编程最佳实践
 
 #### 1. 代码组织结构
 ```pascal
@@ -1300,7 +1932,7 @@ FB_SensorFilter
 FB_AlarmManager
 ```
 
-### 13.2 调试技巧
+### 14.2 调试技巧
 
 #### 1. 使用监视变量
 ```pascal
@@ -1337,7 +1969,7 @@ IF currentCycleTime > T#10ms THEN
 END_IF;
 ```
 
-### 13.3 性能优化
+### 14.3 性能优化
 
 #### 1. 避免不必要的计算
 ```pascal
@@ -1364,7 +1996,7 @@ preciseValue : LREAL;
 
 ---
 
-## 14. 常见问题解答
+## 15. 常见问题解答
 
 ### Q1: ST语言和其他PLC编程语言有什么区别？
 
